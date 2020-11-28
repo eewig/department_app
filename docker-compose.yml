@@ -12,11 +12,11 @@ services:
 
   web:
     build: .
-    command: python -m flask run --host=0.0.0.0
+    command: python wsgi.py
     env_file:
       - .env
-    environment:
-      - FLASK_APP=department_app
+    # environment:
+    #   - FLASK_APP=department_app
     volumes:
       - .:/code
     ports:
