@@ -1,6 +1,8 @@
 from flask import request, render_template, flash, redirect, url_for
 from flask import current_app as app
-from ..models.models import db, Department
+from .. import db
+from ..models.models import Department
+
 
 
 @app.route('/departments/add', methods=['POST','GET'])

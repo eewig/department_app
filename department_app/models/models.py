@@ -1,4 +1,5 @@
-from .. import db
+from .. import db, ma
+from marshmallow_sqlalchemy.fields import Nested
 
 
 class Department(db.Model):
@@ -24,3 +25,15 @@ class Employee(db.Model):
 
     def __repr__(self):
         return f'<Employee {self.id} - {self.name}: {self.department}>'
+
+
+class EmployeeSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Employee
+
+
+class DepartmentSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Department
+
+    # employees = ma.List(Nested(EmployeeSchema))
