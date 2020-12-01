@@ -1,10 +1,8 @@
 from .. import db, ma
-from marshmallow_sqlalchemy.fields import Nested
+# from marshmallow_sqlalchemy.fields import Nested
 
 
 class Department(db.Model):
-    __tablename__ = 'department'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     employees = db.relationship('Employee', backref='employee', lazy=True)
@@ -14,8 +12,6 @@ class Department(db.Model):
 
 
 class Employee(db.Model):
-    __tablename__ = 'employee'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     dob = db.Column(db.DateTime, nullable=False)
@@ -30,10 +26,14 @@ class Employee(db.Model):
 class EmployeeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Employee
+        include_fk = True
+        load_instance = True
 
 
 class DepartmentSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Department
+        include_relationships = True
+        load_instance = True
 
     # employees = ma.List(Nested(EmployeeSchema))

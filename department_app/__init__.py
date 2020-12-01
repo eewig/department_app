@@ -32,9 +32,10 @@ def create_app(test_object=None):
 
 
     # app.register_blueprint(employee.bp)
-    from .rest.api import Departments, api_bp
+    from .rest.api import api_bp, DepartmentList, Department
     api.init_app(api_bp)
-    api.add_resource(Departments, '/departments')
+    api.add_resource(DepartmentList, '/department')
+    api.add_resource(Department, '/department/<int:id>')
 
     app.register_blueprint(api_bp)
 
