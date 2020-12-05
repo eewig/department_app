@@ -2,6 +2,7 @@ import os
 
 
 basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+URI = 'postgresql+psycopg2://{user}:{password}@{host}:{port}/{db}'
 
 
 class Config(object):
@@ -11,14 +12,14 @@ class Config(object):
     # DB
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    _POSTGRES_USER = os.getenv('POSTGRES_USER', 'postgres')
-    _POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD', 'postgres')
-    _POSTGRES_HOST = os.getenv('POSTGRES_HOST', 'db')
-    _POSTGRES_PORT = os.getenv('POSTGRES_PORT', '5432')
-    _POSTGRES_DB = os.getenv('POSTGRES_DB', 'postgres')
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://' + _POSTGRES_USER \
-        + ':' + _POSTGRES_PASSWORD + '@' + _POSTGRES_HOST + ':' \
-        + _POSTGRES_PORT + '/' + _POSTGRES_DB
+    POSTGRES_USER = os.getenv('POSTGRES_USER', 'postgres')
+    POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD', 'postgres')
+    POSTGRES_HOST = os.getenv('POSTGRES_HOST', 'db')
+    POSTGRES_PORT = os.getenv('POSTGRES_PORT', '5432')
+    POSTGRES_DB = os.getenv('POSTGRES_DB', 'postgres')
+    SQLALCHEMY_DATABASE_URI = URI.format(user=POSTGRES_USER,
+        password=POSTGRES_PASSWORD, host=POSTGRES_HOST,
+        port=POSTGRES_PORT, db=POSTGRES_DB)
 
 
 class ProductionConfig(Config):
@@ -35,4 +36,5 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
+    DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
