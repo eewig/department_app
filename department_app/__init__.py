@@ -21,36 +21,42 @@ def create_app(test_object=None):
     else:
         app.config.from_object(test_object)
 
-    # try:
-    #     os.makedirs(app.instance_path)
-    # except OSError:
-    #     pass
-
-    @app.route('/')
-    def hello():
-        return 'Hello'
-
-
-    # app.register_blueprint(employee.bp)
-    from .rest.api import api_bp, DepartmentList, Department
-    api.init_app(api_bp)
-    api.add_resource(DepartmentList, '/department')
-    api.add_resource(Department, '/department/<int:id>')
-
-    app.register_blueprint(api_bp)
-
-
-
-    # DB
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
 
     db.init_app(app)
     ma.init_app(app)
 
+    register_api(app)
+
+    register_blueprints(app)
+
+    from .models import db_utils
+    # db_utils.init_db(db)
+    db_utils.register_db_commands(app)
+
+
     with app.app_context():
         from .views import department
 
-        db.create_all()
-
-
-
     return app
+
+
+def register_api(app):
+    from .rest import api_bp
+    from .rest.department import DepartmentList, Department
+    from .rest.employee import EmployeeList, Employee
+
+    api.init_app(api_bp)
+    api.add_resource(DepartmentList, '/department')
+    api.add_resource(Department, '/department/<int:id>')
+    api.add_resource(EmployeeList, '/employee')
+    api.add_resource(Employee, '/employee/<int:id>')
+
+
+def register_blueprints(app):
+    from .rest import api_bp
+
+    app.register_blueprint(api_bp)

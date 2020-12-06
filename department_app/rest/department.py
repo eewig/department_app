@@ -1,11 +1,11 @@
-from flask import Blueprint, jsonify, request
-from flask_restful import Resource, reqparse
+from flask import jsonify, request
+from flask_restful import Resource
+from marshmallow.exceptions import ValidationError
+from werkzeug.exceptions import BadRequest
 
 from .. import db
 from ..models import models
-
-
-api_bp = Blueprint('api', __name__, url_prefix='/api')
+from ..models import schemas
 
 
 class DepartmentList(Resource):
@@ -14,32 +14,32 @@ class DepartmentList(Resource):
 
     def get(self):
         departments = models.Department.query.all()
-        if departments is None:
-            return jsonify({'message': 'There is no departments.'}, 204)
+        if len(departments) == 0:
+            return '', 204
 
-        department_schema = models.DepartmentSchema(many=True)
-        response = department_schema.dump(departments)
-        return jsonify({'departments': response}, 200)
+        schema = schemas.DepartmentSchema(many=True)
+        response = schema.dump(departments)
+        return jsonify(response)
 
     def post(self):
         json_department = request.get_json()
-        if json_department is None:
-            return jsonify({'message': 'No data provided.'}, 400)
-        schema = models.DepartmentSchema()
-        new_department = schema.load(json_department)
-        print('-'*30, new_department)
+        schema = schemas.DepartmentSchema()
+        try:
+            new_department = schema.load(json_department)
+        except ValidationError:
+            return {'message': 'Data is not valid.'}, 400
         db.session.add(new_department)
         db.session.commit()
-        return jsonify(json_department, 201)
+        return json_department, 201
 
 
 class Department(Resource):
     "Rest class with methods for "
     def get(self, id):
         department = models.Department.query.get_or_404(id)
-        schema = models.DepartmentSchema()
+        schema = schemas.DepartmentSchema()
         response = schema.dump(department)
-        return jsonify(response, 200)
+        return response, 200
 
     def put(self, id):
         department = models.Department.query.get_or_404(id)
@@ -50,10 +50,10 @@ class Department(Resource):
 
         department.name = new_name
         db.session.commit()
-        return jsonify('', 204)
+        return '', 204
 
     def delete(self, id):
         department = models.Department.query.get_or_404(id)
         db.session.delete(department)
         db.session.commit()
-        return jsonify('', 204)
+        return '', 204

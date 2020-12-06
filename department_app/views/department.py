@@ -23,7 +23,6 @@ def department_add():
     return render_template('department_add.html')
 
 
-@app.route('/departments', methods=['GET',])
+@app.route('/', methods=['GET',])
 def departments():
-
     return render_template('departments.html', departments=Department.query.all())

@@ -2,9 +2,13 @@
 
 {% block body %}
 <ul>
-  {% for department in departments %}
-      <li>{{department.id}}, {{department.name}}</li>
-  {% endfor %}
+  {% if departments %}
+    {% for department in departments %}
+        <li>{{department.id}}, {{department.name}}</li>
+    {% endfor %}
+  {% else %}
+    <h2>There is no departments.</h2>
+  {% endif %}
 </ul>
 
 {% endblock %}
