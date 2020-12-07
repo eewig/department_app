@@ -1,7 +1,10 @@
+import json
+
 from flask import jsonify, request
 from flask_restful import Resource
 from marshmallow.exceptions import ValidationError
 from werkzeug.exceptions import BadRequest
+from sqlalchemy.sql import func
 
 from .. import db
 from ..models import models
@@ -13,13 +16,24 @@ class DepartmentList(Resource):
     fetching list of departments."""
 
     def get(self):
-        departments = models.Department.query.all()
-        if len(departments) == 0:
-            return '', 204
+        if request.args.get('avg'):
+            result = db.session.query(
+                models.Department.id, models.Department.name,
+                func.avg(models.Employee.salary).label('average'))\
+                .select_from(models.Employee).join(models.Department)\
+                .group_by(models.Department.id).all()
+            response = []
+            for entry in result:
+                response.append({"id": entry.id, "name": entry.name,
+                 "average-salary": float(entry.average)})
+        else:
+            departments = models.Department.query.all()
+            if len(departments) == 0:
+                return '', 204
 
-        schema = schemas.DepartmentSchema(many=True)
-        response = schema.dump(departments)
-        return jsonify(response)
+            schema = schemas.DepartmentSchema(many=True)
+            response = schema.dump(departments)
+        return response, 200
 
     def post(self):
         json_department = request.get_json()
