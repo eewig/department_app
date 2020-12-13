@@ -37,9 +37,8 @@ def create_app(test_object=None):
     # db_utils.init_db(db)
     db_utils.register_db_commands(app)
 
+    register_routes(app)
 
-    with app.app_context():
-        from .views import department
 
     return app
 
@@ -60,3 +59,9 @@ def register_blueprints(app):
     from .rest import api_bp
 
     app.register_blueprint(api_bp)
+
+
+def register_routes(app):
+    with app.app_context():
+        from .views import department
+        from .views import employee
