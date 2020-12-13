@@ -21,7 +21,7 @@ class DepartmentList(Resource):
             response = []
             for entry in result:
                 response.append({"id": entry.id, "name": entry.name,
-                 "average-salary": round(entry.salary, 2)})
+                 "average-salary": round(float(entry.salary), 2)})
         else:
             departments = models.Department.query.all()
             if len(departments) == 0:
