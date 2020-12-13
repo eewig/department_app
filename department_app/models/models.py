@@ -18,7 +18,7 @@ class Employee(db.Model):
     dob = db.Column(types.Date, nullable=False)
     salary = db.Column(db.Integer, nullable=False)
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'),
-        nullable=False)
+        nullable=True)
 
     def __repr__(self):
         return f'<Employee {self.id} - {self.name}: {self.department}>'
