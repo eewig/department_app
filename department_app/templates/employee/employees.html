@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <h1>Employees</h1>
+
+
+
+  <div class="search-box">
+    <h5>Seach by date of birth:</h5>
+
+    <form action="" method="post">
+      <div class="row">
+        <div class="col-md-3">
+          <label for="birth">Start: </label>
+          <input type="date" id="birth" name="birth">
+        </div>
+
+        <div class="col-md-3">
+          <label for="birth-end">End: </label>
+          <input type="date" id="birth-end" name="birth-end">
+        </div>
+
+        <div class="col-md-2">
+          <input type="button" name="search-button" value="Search">
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <a class="btn btn-outline-info"
+    href="{{ url_for('add_employee') }}" role="button">Add new employee</a>
+
+  {% if employees %}
+
+      <table class="table table-hover">
+        <thead>
+          <th>Name</th>
+          <th>Date of birth</th>
+          <th>Salary</th>
+          <th>Action</th>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+              <tr>
+                <td>
+                  <a href="{{ url_for('employee', id=employee.id) }}">
+                    {{ employee.name }}</a>
+                </td>
+                <td>{{ employee.dob }}</td>
+                <td>{{ employee.salary|float }}</td>
+                <td>
+                  <a href="{{ url_for('update_employee', id=employee.id) }}">
+                    Edit</a>
+                  </td>
+              </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+  {% else %}
+    <h2>There is no employees.</h2>
+  {% endif %}
+
+
+{% endblock %}
