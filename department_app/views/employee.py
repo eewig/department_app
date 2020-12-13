@@ -4,13 +4,15 @@ from sqlalchemy.exc import IntegrityError
 
 from .. import db
 from ..models.models import Employee, Department
-from ..forms import AddEmployee, UpdateEmployee
+from ..forms import AddEmployee, UpdateEmployee, SearchEmployeeForm
 
 
 @app.route('/employee')
 def employees():
+    form = SearchEmployeeForm()
     employees = Employee.query.order_by(Employee.name).all()
-    return render_template('employee/employees.html', employees=employees)
+    return render_template('employee/employees.html', employees=employees,
+        form=form)
 
 @app.route('/employee/<int:id>')
 def employee(id):

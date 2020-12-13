@@ -12,9 +12,7 @@ class AddDepartment(FlaskForm):
     submit = SubmitField('Add')
 
 
-class UpdateDepartment(FlaskForm):
-    name = StringField('Name',
-        validators=[DataRequired(), Length(min=2, max=64)])
+class UpdateDepartment(AddDepartment):
     submit = SubmitField('Update')
 
 
@@ -31,3 +29,9 @@ class AddEmployee(FlaskForm):
 
 class UpdateEmployee(AddEmployee):
     submit = SubmitField('Update')
+
+
+class SearchEmployeeForm(FlaskForm):
+    dob = DateField('Beginning', validators=[DataRequired()])
+    dob_end = DateField('End')
+    submit = SubmitField('Search')

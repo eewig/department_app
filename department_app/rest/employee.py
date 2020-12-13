@@ -12,13 +12,13 @@ class EmployeeList(Resource):
 
     def get(self):
         id = request.args.get('department_id')
-        birth = request.args.get('dob')
-        birth_end = request.args.get('dob_end')
+        dob = request.args.get('dob')
+        dob_end = request.args.get('dob_end')
         if id:
             response = employees_by_department_id(id)
-        elif birth:
+        elif dob:
             try:
-                response = dob_filter(birth, birth_end)
+                response = dob_filter(dob, dob_end)
             except ValueError:
                 return {'message': 'Wrong time format! (yyyy-mm-dd)'}, 400
         else:
@@ -81,31 +81,31 @@ def employees_by_department_id(id):
     return response
 
 
-def dob_filter(birth, birth_end):
-    """Filter employees by date of birth (dob). If birth_end available
+def dob_filter(dob, dob_end):
+    """Filter employees by date of dob. If dob_end available
     filter in range of dates, otherwise by single date.
 
     :return json of employee objects
     """
 
     schema = schemas.EmployeeSchema(many=True)
-    if birth_end is None:
+    if dob_end is None:
         try:
-            birth = datetime.strptime(birth, '%Y-%m-%d')
+            dob = datetime.strptime(dob, '%Y-%m-%d')
         except ValueError:
             raise ValueError
-        employees = models.Employee.query.filter_by(dob=birth)
+        employees = models.Employee.query.filter_by(dob=dob)
         response = schema.dump(employees)
         return response
     else:
         try:
-            birth = datetime.strptime(birth, '%Y-%m-%d')
-            birth_end = datetime.strptime(birth_end, '%Y-%m-%d')
+            dob = datetime.strptime(dob, '%Y-%m-%d')
+            dob_end = datetime.strptime(dob_end, '%Y-%m-%d')
         except ValueError:
             raise ValueError
-        if birth > birth_end:
+        if dob > dob_end:
             raise ValueError
         employees = models.Employee.query.filter(
-            models.Employee.dob.between(birth, birth_end))
+            models.Employee.dob.between(dob, dob_end))
         response = schema.dump(employees)
         return response
