@@ -1,20 +1,22 @@
-image: "python:3.7"
+image: python:3.7
 
-service:
-  - postgres:12
+services:
+  - name: postgres:12
+    alias: db
 
 variables:
   POSTGRES_USER: postgres
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
-  POSTGRES_HOST: db
   POSTGRES_PORT: 5432
 
 before_script:
   - python --version
   - pip install -r requirements.txt
 
+
 stages:
+  - Static Analysis
   - Test
 
 pytest:
