@@ -77,13 +77,9 @@ def employees_by_department_id(id):
     schema = schemas.EmployeeSchema(many=True)
     department = models.Department.query.get_or_404(id)
     employees = models.Employee.query.filter_by(department_id=id)
-    employees_list = []
-    for employee in employees:
-        employees_list.append({"id": employee.id,
-            "name": employee.name, "salary": employee.salary})
-    response = ({"department_id": department.id,
-        "name": department.name}, employees_list)
+    response = schema.dump(employees)
     return response
+
 
 def dob_filter(birth, birth_end):
     """Filter employees by date of birth (dob). If birth_end available
@@ -106,6 +102,8 @@ def dob_filter(birth, birth_end):
             birth = datetime.strptime(birth, '%Y-%m-%d')
             birth_end = datetime.strptime(birth_end, '%Y-%m-%d')
         except ValueError:
+            raise ValueError
+        if birth > birth_end:
             raise ValueError
         employees = models.Employee.query.filter(
             models.Employee.dob.between(birth, birth_end))

@@ -3,12 +3,12 @@ import json
 from flask import jsonify, request
 from flask_restful import Resource
 from marshmallow.exceptions import ValidationError
-from werkzeug.exceptions import BadRequest
-from sqlalchemy.sql import func
+from sqlalchemy.exc import IntegrityError
 
 from .. import db
 from ..models import models
 from ..models import schemas
+from ..models import queries
 
 
 class DepartmentList(Resource):
@@ -17,15 +17,11 @@ class DepartmentList(Resource):
 
     def get(self):
         if request.args.get('avg'):
-            result = db.session.query(
-                models.Department.id, models.Department.name,
-                func.avg(models.Employee.salary).label('average'))\
-                .select_from(models.Employee).join(models.Department)\
-                .group_by(models.Department.id).all()
+            result = queries.get_departments_with_avg_salary()
             response = []
             for entry in result:
                 response.append({"id": entry.id, "name": entry.name,
-                 "average-salary": float(entry.average)})
+                 "average-salary": round(entry.salary, 2)})
         else:
             departments = models.Department.query.all()
             if len(departments) == 0:
@@ -43,7 +39,11 @@ class DepartmentList(Resource):
         except ValidationError:
             return {'message': 'Data is not valid.'}, 400
         db.session.add(new_department)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            return {'message': 'Department with this name already exists.'}, 400
         return json_department, 201
 
 
@@ -63,7 +63,11 @@ class Department(Resource):
                 {'message': 'Name of department is not specified.'}, 400)
 
         department.name = new_name
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            return {'message': 'Department with this name already exists.'}, 400
         return '', 204
 
     def delete(self, id):
