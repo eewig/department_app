@@ -3,8 +3,6 @@ from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Length, NumberRange
 from wtforms.fields.html5 import DateField, IntegerField
 
-from .models import models
-
 
 class AddDepartment(FlaskForm):
     name = StringField('Name',

@@ -8,10 +8,11 @@ from ..models import queries
 from ..forms import AddDepartment, UpdateDepartment
 
 
-@app.route('/', methods=['GET',])
+@app.route('/', methods=['GET', ])
 def home():
     departments = queries.get_departments_with_avg_salary()
-    return render_template('department/departments.html', departments=departments)
+    return render_template('department/departments.html',
+                           departments=departments)
 
 
 @app.route('/department/<int:id>')
@@ -19,14 +20,14 @@ def department(id):
     department = Department.query.get_or_404(id)
     employees = Employee.query.filter_by(department_id=id)
     return render_template('department/department.html',
-        department=department, employees=employees)
+                           department=department, employees=employees)
 
 
-@app.route('/department/add', methods=['POST','GET'])
+@app.route('/department/add', methods=['POST', 'GET'])
 def add_department():
     form = AddDepartment()
     if request.method == 'POST':
-        if  form.validate_on_submit():
+        if form.validate_on_submit():
             new_department = Department(name=form.name.data)
             db.session.add(new_department)
             try:
@@ -56,9 +57,9 @@ def update_department(id):
                 flash('Department with this name already exists.', 'warning')
                 db.session.rollback()
                 return render_template('department/department_update.html',
-                    form=form)
+                                       form=form)
 
             flash(f'Department name successfully changed!', 'success')
             return redirect(url_for('home'))
     return render_template('department/department_update.html',
-        form=form, department=department)
+                           form=form, department=department)

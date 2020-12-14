@@ -37,7 +37,7 @@ def create_app(test_object=None):
     ma.init_app(app)
     migrate.init_app(app, db)
 
-    register_api(app)
+    register_api()
 
     register_blueprints(app)
 
@@ -50,16 +50,16 @@ def create_app(test_object=None):
     return app
 
 
-def register_api(app):
+def register_api():
     from .rest import api_bp
     from .rest.department import DepartmentList, Department
     from .rest.employee import EmployeeList, Employee
 
     api.init_app(api_bp)
     api.add_resource(DepartmentList, '/department')
-    api.add_resource(Department, '/department/<int:id>')
+    api.add_resource(Department, '/department/<int:department_id>')
     api.add_resource(EmployeeList, '/employee')
-    api.add_resource(Employee, '/employee/<int:id>')
+    api.add_resource(Employee, '/employee/<int:employee_id>')
 
 
 def register_blueprints(app):

@@ -12,15 +12,16 @@ def employees():
     form = SearchEmployeeForm()
     employees = Employee.query.order_by(Employee.name).all()
     return render_template('employee/employees.html', employees=employees,
-        form=form)
+                           form=form)
+
 
 @app.route('/employee/<int:id>')
 def employee(id):
     employee = Employee.query.get_or_404(id)
     department = Department.query.join(Department.employees) \
-        .filter(Employee.id==id).first()
+        .filter(Employee.id == id).first()
     return render_template('employee/employee.html', employee=employee,
-        department=department)
+                           department=department)
 
 
 @app.route('/employee/add', methods=('POST', 'GET'))
@@ -31,10 +32,11 @@ def add_employee():
         if form.validate_on_submit():
             if form.department.data:
                 new_employee = Employee(name=form.name.data, dob=form.dob.data,
-                    salary=form.salary.data, department_id=form.department.data)
+                                        salary=form.salary.data,
+                                        department_id=form.department.data)
             else:
                 new_employee = Employee(name=form.name.data, dob=form.dob.data,
-                    salary=form.salary.data)
+                                        salary=form.salary.data)
             db.session.add(new_employee)
             try:
                 db.session.commit()
@@ -48,7 +50,7 @@ def add_employee():
 
         flash('Error! Check data you have entered.', 'warning')
     return render_template('employee/employee_add.html',
-        form=form)
+                           form=form)
 
 
 @app.route('/employee/update/<int:id>', methods=('POST', 'GET'))
@@ -75,7 +77,7 @@ def update_employee(id):
         flash(f'Employee updated!', 'success')
         return redirect(url_for('employees'))
     return render_template('employee/employee_update.html',
-        form=form, employee=employee)
+                           form=form, employee=employee)
 
 
 def get_departments_choices():

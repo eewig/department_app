@@ -1,5 +1,3 @@
-import json
-
 from flask import jsonify, request
 from flask_restful import Resource
 from marshmallow.exceptions import ValidationError
@@ -24,7 +22,7 @@ class DepartmentList(Resource):
                  "average-salary": round(float(entry.salary), 2)})
         else:
             departments = models.Department.query.all()
-            if len(departments) == 0:
+            if not departments:
                 return '', 204
 
             schema = schemas.DepartmentSchema(many=True)
@@ -49,14 +47,14 @@ class DepartmentList(Resource):
 
 class Department(Resource):
     "Rest class with methods for "
-    def get(self, id):
-        department = models.Department.query.get_or_404(id)
+    def get(self, department_id):
+        department = models.Department.query.get_or_404(department_id)
         schema = schemas.DepartmentSchema()
         response = schema.dump(department)
         return response, 200
 
-    def put(self, id):
-        department = models.Department.query.get_or_404(id)
+    def put(self, department_id):
+        department = models.Department.query.get_or_404(department_id)
         new_name = request.json.get('name')
         if new_name is None:
             return jsonify(
@@ -70,8 +68,8 @@ class Department(Resource):
             return {'message': 'Department with this name already exists.'}, 400
         return '', 204
 
-    def delete(self, id):
-        department = models.Department.query.get_or_404(id)
+    def delete(self, department_id):
+        department = models.Department.query.get_or_404(department_id)
         db.session.delete(department)
         db.session.commit()
         return '', 204

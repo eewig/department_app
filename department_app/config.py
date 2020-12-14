@@ -39,4 +39,5 @@ class TestingConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     if os.getenv('GITLAB_CI'):
-        SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:postgres@db:5432/test'
+        SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:postgres@db'\
+                                  ':5432/test'
