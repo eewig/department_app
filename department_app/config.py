@@ -10,7 +10,7 @@ class Config(object):
     SECRET_KEY = os.getenv('SECRET_KEY')
 
     # DB
-    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     POSTGRES_USER = os.getenv('POSTGRES_USER', 'postgres')
     POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD', 'postgres')

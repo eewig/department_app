@@ -1,4 +1,5 @@
 import os
+import logging
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -14,6 +15,8 @@ db = SQLAlchemy()
 api = Api()
 ma = Marshmallow()
 migrate = Migrate()
+
+logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 
 def create_app(test_object=None):
