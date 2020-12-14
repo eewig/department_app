@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_restful import Api
 from flask_marshmallow import Marshmallow
 
@@ -12,6 +13,8 @@ APP_SETTINGS = 'department_app.' + os.getenv('APP_SETTINGS',
 db = SQLAlchemy()
 api = Api()
 ma = Marshmallow()
+migrate = Migrate()
+
 
 def create_app(test_object=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -26,15 +29,16 @@ def create_app(test_object=None):
     except OSError:
         pass
 
+    from .models.models import Department, Employee
     db.init_app(app)
     ma.init_app(app)
+    migrate.init_app(app, db)
 
     register_api(app)
 
     register_blueprints(app)
 
     from .models import db_utils
-    # db_utils.init_db(db)
     db_utils.register_db_commands(app)
 
     register_routes(app)
