@@ -56,10 +56,19 @@ def update_department(id):
             except IntegrityError:
                 flash('Department with this name already exists.', 'warning')
                 db.session.rollback()
-                return render_template('department/department_update.html',
-                                       form=form)
+                return redirect(url_for('update_department', id=department.id))
+
 
             flash(f'Department name successfully changed!', 'success')
             return redirect(url_for('home'))
     return render_template('department/department_update.html',
                            form=form, department=department)
+
+
+@app.route('/department/delete/<int:department_id>', methods=('GET', ))
+def delete_department(department_id):
+    department = Department.query.get_or_404(department_id)
+    db.session.delete(department)
+    db.session.commit()
+    flash(f'Department {department.name} successfully deleted.', 'success')
+    return redirect(url_for('home'))

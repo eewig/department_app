@@ -27,7 +27,8 @@
     {{ form.submit(class="btn btn-outline-info") }}
   </div>
 
-  <a class="btn btn-outline-danger" href=""
+  <a class="btn btn-outline-danger"
+    href="{{ url_for('delete_employee', employee_id=employee.id) }}"
     role="button">Delete</a>
 
 </form>

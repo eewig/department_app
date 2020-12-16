@@ -80,6 +80,15 @@ def update_employee(id):
                            form=form, employee=employee)
 
 
+@app.route('/employee/delete/<int:employee_id>', methods=('GET', ))
+def delete_employee(employee_id):
+    employee = Employee.query.get_or_404(employee_id)
+    db.session.delete(employee)
+    db.session.commit()
+    flash(f'Employee {employee.name} successfully deleted.', 'success')
+    return redirect(url_for('employees'))
+
+
 def get_departments_choices():
     departments = Department.query.order_by(Department.name).all()
     choices = [(dep.id, dep.name) for dep in departments]
