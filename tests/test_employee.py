@@ -1,96 +1,74 @@
-import os
 import pytest
 
 
-def test_get_no_employees(client):
-    response = client.get('/api/employee')
-    assert response.status_code == 204
-    assert response.data == b''
+def test_no_employees(client):
+    response = client.get('/employee')
+    assert response.status_code == 200
+    assert b'There is no employees.' in response.data
+
 
 def test_get_employee_error(client):
-    response = client.get('/api/employee/1')
+    response = client.get('/employee/1')
     assert response.status_code == 404
 
-def test_post_employee_error(client):
-    response = client.post('/api/employee', json={})
-    assert response.status_code == 400
 
-def test_post_employee(client):
-    response = client.post('/api/department', json={'name': 'Dev'})
-    response = client.post('/api/employee', json={'name': 'John',
-        'dob': '2000-10-10', 'salary': 1000, 'department_id': 1})
-    assert response.status_code == 201
-    assert response.get_json() == {'name': 'John', 'dob': '2000-10-10',
-        'salary': 1000, 'department_id': 1}
+def test_add_employee_get(client):
+    response = client.get('/employee/add')
+    assert response.status_code == 200
+
+
+def test_add_employee_post(client):
+    response = client.post('/employee/add',
+                           data={'name': 'Tester', 'dob': '2000-10-10',
+                                 'salary': 1000, 'department': 0})
+    assert response.status_code == 302
+    response = client.get('/employee/1')
+    assert response.status_code == 200
+    assert b'Tester' in response.data
+
+
+@pytest.fixture(params=[('Jack', 'aa-10-10', 10, 0), ('Jack', '2000-10-10', 10, None)])
+def test_add_employee_error(client, name, dob, salary, department):
+    response = client.post('/employee/add',
+                           data={'name': name, 'dob': dob,
+                                 'salary': salary, 'department': department})
+
+    assert response.status_code == 302
+    assert b'Error! Check data you have entered.' in response.data
+
+
+def test_update_employee_get(client):
+    response = client.get('/employee/update/1')
+    assert response.status_code == 200
+
+
+def test_update_employee_post(client):
+    response = client.post('/employee/update/1',
+                           data={'name': 'Employee1', 'dob': '2000-10-10',
+                                 'salary': 1000, 'department': 0})
+    assert response.status_code == 302
+    assert b'Error!' not in response.data
+    response = client.get('/employee/1')
+    assert response.status_code == 200
+    assert b'Employee1' in response.data
+
+
+@pytest.fixture(params=[('Jack', 'aa-10-10', 10, 0), ('Jack', '2000-10-10', 10, None)])
+def test_update_employee_error(client):
+    response = client.post('/employee/update/1',
+                           data={'name': name, 'dob': dob,
+                                 'salary': salary, 'department': department})
+    assert response.status_code == 302
+    assert b'Error! Check data you have entered.' in response.data
+
 
 def test_get_employees(client):
-    response = client.post('/api/employee', json={'name': 'Friedrich',
-        'dob': '1999-09-09', 'salary': 1000})
-    assert response.status_code == 201
-    response = client.get('/api/employee')
+    response = client.get('/employee')
     assert response.status_code == 200
-    assert response.get_json() == [{'id':1, 'name': 'John',
-        'dob': '2000-10-10', 'salary': 1000, 'department_id': 1},
-        {'id': 2, 'name': 'Friedrich', 'dob': '1999-09-09',
-        'salary': 1000, 'department_id': None}]
+    assert b'Employee' in response.data
+    assert b'2000-10-10' in response.data
 
-def test_get_employee(client):
-    response = client.get('/api/employee/1')
-    assert response.status_code == 200
-    assert response.get_json() == {'id':1, 'name': 'John',
-        'dob': '2000-10-10', 'salary': 1000, 'department_id': 1}
-
-def test_put_employee(client):
-    response = client.put('/api/employee/1',
-        json={'name': 'Jack', 'dob': '2000-10-10', 'salary': 1000,
-        'department_id': 1})
-    assert response.status_code == 204
-    response = client.put('/api/employee/2',
-        json={'salary': 2000})
-    assert response.status_code == 204
-
-
-def test_employee_by_department_id(client):
-    response = client.get('/api/employee', query_string={'department_id': 1})
-    assert response.status_code == 200
-    assert response.get_json() == [{'id':1, 'name': 'Jack',
-        'dob': '2000-10-10', 'salary': 1000, 'department_id': 1}]
-
-
-@pytest.mark.skipif(os.getenv('GITLAB_CI') is None,
-    reason='SQLite doesnt have date field type')
-def test_dob_filter(client):
-    response = client.get('/api/employee',
-        query_string={'dob':'2000-10-10'})
-    assert response.status_code == 200
-    assert response.get_json() == [{'id':1, 'name': 'Jack',
-        'dob': '2000-10-10', 'salary': 1000, 'department_id': 1}]
-
-def test_dob_filter_range(client):
-    response = client.get('/api/employee',
-        query_string={'dob':'1999-09-01', 'dob_end': '2001-10-10'})
-    assert response.status_code == 200
-    assert response.get_json() == [{'id':1, 'name': 'Jack',
-        'dob': '2000-10-10', 'salary': 1000, 'department_id': 1},
-        {'id': 2, 'name': 'Friedrich', 'dob': '1999-09-09',
-        'salary': 2000, 'department_id': None}]
-
-def test_dob_filter_error(client):
-    response = client.get('/api/employee',
-        query_string={'dob': '10-10-2000'})
-    assert response.status_code == 400
-    assert response.get_json() == {'message':
-        'Wrong time format! (yyyy-mm-dd)'}
-
-@pytest.fixture(scope="module", params=[('10-aaa-2000', '1999-01-01'),
-    ('10-10-2010', '1990-10-10'), ('1111-13-13', '2000-01-01')])
-def test_dob_filter_range_error(client, dob, dob_end):
-    response = client.get('/api/employee',
-        query_string={'dob': dob, 'dob_end': dob_end})
-    assert response.status_code == 400
-    assert response.get_json() == {'message':
-        'Wrong time format! (yyyy-mm-dd)'}
 
 def test_delete_employee(client):
-    response = client.delete('/api/employee/2')
-    assert response.status_code == 204
+    response = client.get('/employee/delete/1')
+    assert response.status_code == 302

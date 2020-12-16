@@ -1,52 +1,74 @@
 
-def test_api_department_error(client):
-    response = client.get('/api/department')
-    rv = client.post('/api/department')
 
-    assert response.status_code == 204
-    assert response.data == b''
-    assert rv.status_code == 400
-    assert rv.get_json() == {'message': 'Data is not valid.'}
-
-def test_department_post(client):
-    response = client.post('/api/department',
-        json={'name': 'test_department'})
-    assert response.status_code == 201
-    assert response.get_json() == {'name': 'test_department'}
-
-def test_api_department_list(client):
-    response = client.get('/api/department')
-    assert response.get_json() == [{'employees': [],
-        'id': 1, 'name': 'test_department'}]
+def test_no_departments(client):
+    response = client.get('/')
     assert response.status_code == 200
+    assert b'There is no departments.' in response.data
 
-def test_api_department_error(client):
-    response = client.get('/api/department/2')
+
+def test_get_department_error(client):
+    response = client.get('/department/1')
     assert response.status_code == 404
 
-def test_api_department_put(client):
-    response = client.put('/api/department/1', json={'name': 'new_department'})
-    assert response.status_code == 204
 
-def test_api_department_get(client):
-    response = client.get('/api/department/1')
+def test_add_department_get(client):
+    response = client.get('/department/add')
     assert response.status_code == 200
-    assert response.get_json() == {"employees": [], "id": 1,
-        "name": "new_department"}
 
-def test_get_departments_avg_salary(client):
-    response = client.post('/api/employee',
-        json={'name': 'Jack', 'dob': '2000-01-01', 'salary': 500,
-        'department_id': 1})
-    response = client.post('/api/employee',
-        json={'name': 'John', 'dob': '2000-01-01', 'salary': 1500,
-        'department_id': 1})
-    response = client.get('/api/department',
-        query_string={'avg': 1})
+
+def test_add_department_post(client):
+    response = client.post('/department/add',
+                           data={'name': 'test department'})
+    assert response.status_code == 302
+
+
+def test_get_department(client):
+    response = client.get('/department/1')
     assert response.status_code == 200
-    assert response.get_json() == [{'id': 1, 'name': 'new_department',
-    'average-salary': 1000.0}]
+    assert b'test department' in response.data
 
-def test_api_department_delete(client):
-    response = client.delete('/api/department/1')
-    assert response.status_code == 204
+
+def test_get_departments(client):
+    response = client.get('/')
+    assert response.status_code == 200
+    assert b'test department' in response.data
+
+
+def test_update_department_get(client):
+    response = client.get('/department/update/1')
+    assert response.status_code == 200
+
+
+def test_update_department_post(client):
+    response = client.post('/department/update/1',
+                           data={'name': 'new department'})
+    assert response.status_code == 302
+    response = client.get('/department/1')
+    assert response.status_code == 200
+    assert b'new department' in response.data
+
+
+def test_update_department_error(client):
+    response = client.post('/department/add',
+                           data={'name': 'Testing department'},
+                           follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Testing department' in response.data
+    response = client.post('/department/update/2',
+                           data={'name': 'new department'},
+                           follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Department with this name already exists.' in response.data
+
+
+def test_add_department_error(client):
+    response = client.post('/department/add',
+                           data={'name': 'Testing department'},
+                           follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Department already exists!' in response.data
+
+
+def test_delete_department(client):
+    response = client.get('/department/delete/1')
+    assert response.status_code == 302
