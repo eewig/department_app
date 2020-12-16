@@ -1,0 +1,6 @@
+[run]
+branch = True
+source = department_app
+
+[html] 
+directory = documentation/coverage

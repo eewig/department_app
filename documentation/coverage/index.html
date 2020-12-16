@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Coverage report</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.ba-throttle-debounce.min.js"></script>
+    <script type="text/javascript" src="jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="coverage_html.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(coverage.index_ready);
+    </script>
+</head>
+<body class="indexfile">
+<div id="header">
+    <div class="content">
+        <h1>Coverage report:
+            <span class="pc_cov">88%</span>
+        </h1>
+        <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
+        <form id="filter_container">
+            <input id="filter" type="text" value="" placeholder="filter..." />
+        </form>
+    </div>
+</div>
+<div class="help_panel">
+    <img id="panel_icon" src="keybd_open.png" alt="Hide keyboard shortcuts" />
+    <p class="legend">Hot-keys on this page</p>
+    <div>
+    <p class="keyhelp">
+        <span class="key">n</span>
+        <span class="key">s</span>
+        <span class="key">m</span>
+        <span class="key">x</span>
+        <span class="key">b</span>
+        <span class="key">p</span>
+        <span class="key">c</span> &nbsp; change column sorting
+    </p>
+    </div>
+</div>
+<div id="index">
+    <table class="index">
+        <thead>
+            <tr class="tablehead" title="Click to sort">
+                <th class="name left headerSortDown shortkey_n">Module</th>
+                <th class="shortkey_s">statements</th>
+                <th class="shortkey_m">missing</th>
+                <th class="shortkey_x">excluded</th>
+                <th class="shortkey_b">branches</th>
+                <th class="shortkey_p">partial</th>
+                <th class="right shortkey_c">coverage</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr class="total">
+                <td class="name left">Total</td>
+                <td>415</td>
+                <td>44</td>
+                <td>0</td>
+                <td>48</td>
+                <td>11</td>
+                <td class="right" data-ratio="408 463">88%</td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="file">
+                <td class="name left"><a href="department_app___init___py.html">department_app/__init__.py</a></td>
+                <td>47</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td class="right" data-ratio="47 49">96%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="department_app_config_py.html">department_app/config.py</a></td>
+                <td>29</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td class="right" data-ratio="29 31">94%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="department_app_forms_py.html">department_app/forms.py</a></td>
+                <td>21</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="21 21">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="department_app_models_db_utils_py.html">department_app/models/db_utils.py</a></td>
+                <td>23</td>
+                <td>10</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="13 23">57%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="department_app_models_models_py.html">department_app/models/models.py</a></td>
+                <td>16</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="14 16">88%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="department_app_models_queries_py.html">department_app/models/queries.py</a></td>
+                <td>7</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="7 7">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="department_app_models_schemas_py.html">department_app/models/schemas.py</a></td>
+                <td>12</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="12 12">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="department_app_rest___init___py.html">department_app/rest/__init__.py</a></td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="2 2">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="department_app_rest_department_py.html">department_app/rest/department.py</a></td>
+                <td>58</td>
+                <td>10</td>
+                <td>0</td>
+                <td>8</td>
+                <td>2</td>
+                <td class="right" data-ratio="54 66">82%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="department_app_rest_employee_py.html">department_app/rest/employee.py</a></td>
+                <td>83</td>
+                <td>6</td>
+                <td>0</td>
+                <td>14</td>
+                <td>1</td>
+                <td class="right" data-ratio="90 97">93%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="department_app_views_department_py.html">department_app/views/department.py</a></td>
+                <td>51</td>
+                <td>1</td>
+                <td>0</td>
+                <td>8</td>
+                <td>2</td>
+                <td class="right" data-ratio="56 59">95%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="department_app_views_employee_py.html">department_app/views/employee.py</a></td>
+                <td>66</td>
+                <td>13</td>
+                <td>0</td>
+                <td>14</td>
+                <td>4</td>
+                <td class="right" data-ratio="63 80">79%</td>
+            </tr>
+        </tbody>
+    </table>
+    <p id="no_rows">
+        No items found using the specified filter.
+    </p>
+</div>
+<div id="footer">
+    <div class="content">
+        <p>
+            <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.3</a>,
+            created at 2020-12-16 22:27 +0200
+        </p>
+    </div>
+</div>
+</body>
+</html>
