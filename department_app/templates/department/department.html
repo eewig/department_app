@@ -9,7 +9,12 @@
   href="{{ url_for('update_department', id=department.id) }}"
   role="button">Edit</a>
 
-{% if employees %}
+
+
+<div class="employees-table">
+  {% if employees %}
+
+  <h4>Employees</h4>
   <table class="table">
     <thead>
       <th>Name</th>
@@ -27,8 +32,10 @@
       {% endfor %}
     </tbody>
   </table>
-{% else %}
-  <h3>No employees in department.</h3>
-{% endif %}
+
+  {% else %}
+    <h3>No employees in department.</h3>
+  {% endif %}
+</div>
 
 {% endblock %}
