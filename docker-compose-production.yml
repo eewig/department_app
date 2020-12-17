@@ -12,10 +12,9 @@ services:
 
   web:
     build: .
-    command: python wsgi.py
+    command: gunicorn --bind 0.0.0.0:5000 --workers=3 wsgi:app
     env_file:
       - .env
-
     volumes:
       - .:/code
     ports:
