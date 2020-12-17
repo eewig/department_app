@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:12
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:5000 --workers=3 wsgi:app
+    env_file:
+      - .env
+    volumes:
+      - .:/code
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

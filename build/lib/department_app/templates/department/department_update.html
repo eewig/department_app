@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<form method="POST">
+  {{ form.hidden_tag() }}
+  <fieldset class="form-group">
+    <div class="form-group">
+      {{ form.name.label(class="form-control-label") }}
+      {{ form.name(class="form-control form-control-lg", value=department.name) }}
+    </div>
+  </fieldset>
+
+  <div class="form-group">
+    {{ form.submit(class="btn btn-outline-info") }}
+  </div>
+
+  <a class="btn btn-outline-danger" href=""
+    role="button">Delete</a>
+</form>
+
+{% endblock %}

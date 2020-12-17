@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<form method="POST">
+  {{ form.hidden_tag() }}
+  <fieldset class="form-group">
+    <div class="form-group">
+      {{ form.name.label(class="form-control-label") }}
+      {{ form.name(class="form-control form-control-lg") }}
+    </div>
+    <div class="form-group">
+      {{ form.dob.label(class="form-control-label") }}
+      {{ form.dob(class="form-control form-control-lg") }}
+    </div>
+    <div class="form-group">
+      {{ form.salary.label(class="form-control-label") }}
+      {{ form.salary(class="form-control form-control-lg", min=0) }}
+    </div>
+    <div class="form-group">
+      {{ form.department.label(class="form-control-label") }}
+      {{ form.department(class="form-control form-control-lg") }}
+    </div>
+  </fieldset>
+
+  <div class="form-group">
+    {{ form.submit(class="btn btn-outline-info") }}
+  </div>
+
+</form>
+
+{% endblock %}

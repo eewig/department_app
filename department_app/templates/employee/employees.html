@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <h1>Employees</h1>
+
+
+
+  <div class="search-box">
+    <h5>Seach by date of birth:</h5>
+
+    <form action="" method="POST">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="form-group">
+            {{ form.dob.label(class="form-control-label") }}
+            {{ form.dob(id="dob") }}
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="form-group">
+            {{ form.dob_end.label(class="form-control-label") }}
+            {{ form.dob_end(id="dob_end") }}
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          {{ form.submit }}
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <a class="btn btn-outline-info"
+    href="{{ url_for('add_employee') }}" role="button">Add new employee</a>
+
+  {% if employees %}
+
+      <table class="table table-hover">
+        <thead>
+          <th>Name</th>
+          <th>Date of birth</th>
+          <th>Salary</th>
+          <th>Action</th>
+        </thead>
+        <tbody id="employees-tbody">
+            {% for employee in employees %}
+              <tr>
+                <td>
+                  <a href="{{ url_for('employee', id=employee.id) }}">
+                    {{ employee.name }}</a>
+                </td>
+                <td>{{ employee.dob }}</td>
+                <td>{{ employee.salary|float }}</td>
+                <td>
+                  <a href="{{ url_for('update_employee', id=employee.id) }}">
+                    Edit</a>
+                  </td>
+              </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+  {% else %}
+    <h2>There is no employees.</h2>
+  {% endif %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+  const searchEmployeesByDob = async (ev) => {
+    ev.preventDefault();
+    const dob = document.getElementById('dob').value;
+    const dob_end = document.getElementById('dob_end').value;
+    let url = undefined;
+    let json = undefined;
+    console.log(json);
+    if(dob_end){
+      url = $SCRIPT_ROOT+'/api/employee?dob='+dob+'&dob_end='+dob_end;
+    } else{
+      url = $SCRIPT_ROOT+'/api/employee?dob='+dob;
+    }
+    try{
+      const response = await fetch(url, {cache: 'no-cache'});
+      if(response.ok){
+        json = await response.json();
+        showEmployees(json);
+      }
+    } catch(error){
+        console.log(error);
+    }
+  }
+
+
+  function showEmployees(json){
+    var employees = document.getElementById('employees-tbody')
+    var content = '';
+    for(var i=0; i < json.length; i++){
+      content += "<tr>";
+      content += '<td><a href="/employee/' + json[i]['id'] + '">' + json[i]['name'] + '</a></td>';
+      content += '<td>' + json[i]['dob'] + '</td>';
+      content += '<td>' + json[i]['salary'] + '</td>';
+      content += '<td><a href="/employee/update/' + json[i]['id'] + '">' + 'Edit' + '</a></td>';
+      content += "</tr>";
+      employees.innerHTML = content;
+    }
+  }
+
+  var form = document.getElementsByTagName('form')[0];
+  form.addEventListener('submit', searchEmployeesByDob);
+</script>
+{% endblock %}
