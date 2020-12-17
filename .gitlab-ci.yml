@@ -17,8 +17,8 @@ before_script:
 
 
 stages:
-  - Static Analysis
   - Test
+  - Static Analysis
 
 
 pytest:
