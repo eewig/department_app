@@ -9,17 +9,26 @@ from flask_marshmallow import Marshmallow
 
 
 APP_SETTINGS = 'department_app.' + os.getenv('APP_SETTINGS',
-    'config.DevelopmentConfig')
+    'config.ProductionConfig')
 
 db = SQLAlchemy()
 api = Api()
 ma = Marshmallow()
 migrate = Migrate()
 
-logging.basicConfig(filename='app.log', level=logging.DEBUG)
+if os.getenv('APP_SETTINGS') == 'config.ProductionConfig':
+    logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 
 def create_app(test_object=None):
+    """Application factory. Create app instance.
+
+    :param test_object: Configuration object for testing purposes.
+
+    :returns: App instance
+    :rtype: Flask
+    """
+
     app = Flask(__name__, instance_relative_config=True)
 
     if test_object is None:
@@ -32,7 +41,7 @@ def create_app(test_object=None):
     except OSError:
         pass
 
-    from .models.models import Department, Employee
+    # from .models.models import Department, Employee
     db.init_app(app)
     ma.init_app(app)
     migrate.init_app(app, db)
@@ -45,12 +54,14 @@ def create_app(test_object=None):
     db_utils.register_db_commands(app)
 
     register_routes(app)
-
-
     return app
 
 
 def register_api():
+    """Import and initialize api.
+    Adds all resources to the api.
+    """
+
     from .rest import api_bp
     from .rest.department import DepartmentList, Department
     from .rest.employee import EmployeeList, Employee
@@ -63,12 +74,14 @@ def register_api():
 
 
 def register_blueprints(app):
+    """Import and register all blueprints on the application."""
     from .rest import api_bp
 
     app.register_blueprint(api_bp)
 
 
 def register_routes(app):
+    """Import all views so that they are available in the application."""
     with app.app_context():
         from .views import department
         from .views import employee

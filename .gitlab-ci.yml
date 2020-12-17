@@ -20,6 +20,13 @@ stages:
   - Static Analysis
   - Test
 
+
+pylint:
+  stage: Static Analysis
+  script:
+    - pylint department_app
+
+
 pytest:
   stage: Test
   script:

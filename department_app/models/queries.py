@@ -6,6 +6,11 @@ from . import models
 
 
 def get_departments_with_avg_salary():
+    """Calculates average salary for departments.
+
+    :return: List of departments
+    """
+
     result = db.session.query(
         models.Department.id, models.Department.name,
         func.avg(models.Employee.salary).label('salary'))\
