@@ -1,0 +1,4 @@
+include wsgi.py
+graft department_app/static
+graft department_app/templates
+global-exclude *.pyc
