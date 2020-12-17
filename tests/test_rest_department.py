@@ -8,7 +8,7 @@ def test_api_department_error(client):
     assert rv.get_json() == {'message': 'Data is not valid.'}
 
 
-def test_department_post(client):
+def test_api_department_post(client):
     response = client.post('/api/department',
                            json={'name': 'test_department'})
     assert response.status_code == 201
@@ -34,6 +34,13 @@ def test_api_department_put(client):
     assert response.status_code == 204
 
 
+def test_api_department_put_error(client):
+    response = client.put('/api/department/1', json={})
+    assert response.status_code == 400
+    assert response.get_json() == {'message':
+                                   'Name of department is not specified.'}
+
+
 def test_api_department_get(client):
     response = client.get('/api/department/1')
     assert response.status_code == 200
@@ -41,7 +48,7 @@ def test_api_department_get(client):
                                    "name": "new_department"}
 
 
-def test_get_departments_avg_salary(client):
+def test_api_get_departments_avg_salary(client):
     response = client.post('/api/employee',
                            json={'name': 'Jack', 'dob': '2000-01-01',
                                  'salary': 500, 'department_id': 1})
