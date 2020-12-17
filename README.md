@@ -1,1 +1,1 @@
-[Coverage report](documentation/coverage/index.html)
+![Coverage report](documentation/coverage/coverage_report.png)
