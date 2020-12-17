@@ -21,13 +21,13 @@ stages:
   - Test
 
 
-pylint:
-  stage: Static Analysis
-  script:
-    - pylint department_app
-
-
 pytest:
   stage: Test
   script:
     - pytest -v
+
+
+pylint:
+  stage: Static Analysis
+  script:
+    - pylint department_app
