@@ -141,10 +141,12 @@ disable=print-statement,
         comprehension-escape,
         C0114,
         C0415,
-        R0903,
-        R0201,
-        W0611,
-        R0401,
+        E1101,    # Instance of 'SQLAlchemy' has no Column
+        R0903,    # Too few public methods
+        R0201,    # Method could be a function
+        W0611,    # Unused import
+        R0401,    # Cyclic import. !! NEED to fix it later.
+        R0801,    # Similar lines in 2 files
 
 
 # Enable the message, report, category or checker with the given id(s). You can
@@ -532,7 +534,7 @@ max-branches=12
 max-locals=15
 
 # Maximum number of parents for a class (see R0901).
-max-parents=7
+max-parents=10
 
 # Maximum number of public methods for a class (see R0904).
 max-public-methods=20

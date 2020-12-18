@@ -17,7 +17,7 @@
             {% for department in departments %}
               <tr>
                 <td>
-                  <a href="{{ url_for('department', id=department.id) }}">
+                  <a href="{{ url_for('department', department_id=department.id) }}">
                     {{ department.name }}</a>
                   </td>
                 <td>
@@ -28,7 +28,7 @@
                   {% endif %}
                   </td>
                 <td>
-                  <a href="{{ url_for('update_department', id=department.id) }}">
+                  <a href="{{ url_for('update_department', department_id=department.id) }}">
                     Edit</a>
                   </td>
               </tr>

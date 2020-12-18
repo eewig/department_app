@@ -48,13 +48,13 @@
             {% for employee in employees %}
               <tr>
                 <td>
-                  <a href="{{ url_for('employee', id=employee.id) }}">
+                  <a href="{{ url_for('employee', employee_id=employee.id) }}">
                     {{ employee.name }}</a>
                 </td>
                 <td>{{ employee.dob }}</td>
                 <td>{{ employee.salary|float }}</td>
                 <td>
-                  <a href="{{ url_for('update_employee', id=employee.id) }}">
+                  <a href="{{ url_for('update_employee', employee_id=employee.id) }}">
                     Edit</a>
                   </td>
               </tr>

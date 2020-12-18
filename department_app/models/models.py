@@ -4,6 +4,7 @@ from .. import db
 
 
 class Department(db.Model):
+    """Department model."""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
     employees = db.relationship('Employee', backref='department', lazy=True)
@@ -13,6 +14,7 @@ class Department(db.Model):
 
 
 class Employee(db.Model):
+    """Employee model."""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     dob = db.Column(types.Date, nullable=False)
