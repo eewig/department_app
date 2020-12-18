@@ -2,6 +2,8 @@ __pychache__/
 *.py[cod]
 
 venv/
+.idea/
+.coverage
 
 .env
 

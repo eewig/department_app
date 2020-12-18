@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/gitlab/eewig/department-app/badge.svg?branch=master)](https://coveralls.io/gitlab/eewig/department-app?branch=master)
+
 ### How to build app
 The easiest way to build the department app in my opinion is 
 using docker. There is already a docker-compose-production 
@@ -13,7 +15,3 @@ Additionally, is required .env file with next environment variables:
 - POSTGRES_HOST;
 - POSTGRES_PORT;
 - POSTGRES_DB.
-
-
-### Coverage report
-![Coverage report](documentation/coverage/coverage_report.png)
