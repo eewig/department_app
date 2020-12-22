@@ -39,3 +39,8 @@ def client(app):
         db.session.remove()
         if str(db.engine.url) == TestingConfig.SQLALCHEMY_DATABASE_URI:
             db.drop_all()
+
+
+@pytest.fixture
+def runner(app):
+    return app.test_cli_runner()

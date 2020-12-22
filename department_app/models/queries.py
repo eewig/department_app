@@ -1,7 +1,7 @@
 from sqlalchemy.sql import func
 from sqlalchemy import desc
 
-from .. import db
+from . import db
 from . import models
 
 

@@ -2,7 +2,7 @@ import click
 from flask import current_app
 from flask.cli import with_appcontext
 
-from .. import db
+from . import db
 
 
 def init_db():

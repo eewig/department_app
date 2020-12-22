@@ -3,7 +3,7 @@ from flask import request
 from flask_restful import Resource
 from marshmallow.exceptions import ValidationError
 
-from .. import db
+from ..models import db
 from ..models import models
 from ..models import schemas
 

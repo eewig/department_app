@@ -1,6 +1,6 @@
 from sqlalchemy import types
 
-from .. import db
+from . import db
 
 
 class Department(db.Model):

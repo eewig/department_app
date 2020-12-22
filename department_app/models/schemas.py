@@ -1,6 +1,10 @@
-from .. import ma
+from flask_marshmallow import Marshmallow
+
+# from .. import ma
 from .models import Employee, Department
 
+
+ma = Marshmallow()
 
 class EmployeeSchema(ma.SQLAlchemyAutoSchema):
     """Schema for Employee model."""

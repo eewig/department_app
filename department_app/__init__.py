@@ -2,18 +2,17 @@ import os
 import logging
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restful import Api
-from flask_marshmallow import Marshmallow
+
+from .models import db              # SQLAlchemy instance
+from .models.schemas import ma      # Marshmallow instance
 
 
 APP_SETTINGS = 'department_app.' + os.getenv('APP_SETTINGS',
     'config.ProductionConfig')
 
-db = SQLAlchemy()
 api = Api()
-ma = Marshmallow()
 migrate = Migrate()
 
 if os.getenv('APP_SETTINGS') == 'config.ProductionConfig':
@@ -50,8 +49,8 @@ def create_app(test_object=None):
 
     register_blueprints(app)
 
-    from .models import db_utils
-    db_utils.register_db_commands(app)
+    from .models.db_utils import register_db_commands
+    register_db_commands(app)
 
     register_routes(app)
     return app

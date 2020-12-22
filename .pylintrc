@@ -145,8 +145,8 @@ disable=print-statement,
         R0903,    # Too few public methods
         R0201,    # Method could be a function
         W0611,    # Unused import
-        R0401,    # Cyclic import. !! NEED to fix it later.
         R0801,    # Similar lines in 2 files
+        # R0401,    # Cyclic import. 
 
 
 # Enable the message, report, category or checker with the given id(s). You can

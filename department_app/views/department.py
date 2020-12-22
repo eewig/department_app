@@ -2,7 +2,7 @@ from flask import request, render_template, flash, redirect, url_for
 from flask import current_app as app
 from sqlalchemy.exc import IntegrityError
 
-from .. import db
+from ..models import db
 from ..models.models import Department, Employee
 from ..models import queries
 from ..forms import AddDepartment, UpdateDepartment
