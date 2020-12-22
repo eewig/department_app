@@ -5,11 +5,16 @@
 
 
 
+  <a class="btn btn-outline-info"
+    href="{{ url_for('add_employee') }}" role="button">Add new employee</a>
+
+
+
   <div class="search-box">
     <h5>Seach by date of birth:</h5>
 
     <form action="" method="POST">
-      <div class="row">
+      <div class="row search-inputs">
         <div class="col-md-2">
           <div class="form-group">
             {{ form.dob.label(class="form-control-label") }}
@@ -31,9 +36,6 @@
     </form>
   </div>
 
-
-  <a class="btn btn-outline-info"
-    href="{{ url_for('add_employee') }}" role="button">Add new employee</a>
 
   {% if employees %}
 

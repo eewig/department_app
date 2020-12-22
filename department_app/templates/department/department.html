@@ -24,7 +24,7 @@
     <tbody>
       {% for employee in employees %}
       <tr>
-        <td><a href="{{ url_for('employee', id=employee.id) }}">
+        <td><a href="{{ url_for('employee', employee_id=employee.id) }}">
           {{ employee.name|title}}</a></td>
         <td>{{ employee.dob }}</td>
         <td>{{ employee.salary }}</td>

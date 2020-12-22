@@ -10,7 +10,7 @@
     <li>Salary: {{ employee.salary }}</li>
     <li>Department:
       {% if employee.department_id %}
-        <a href="{{ url_for('department', id=department.id) }}">
+        <a href="{{ url_for('department', department_id=department.id) }}">
           {{ department.name }}</a>
       {% else %}
         No department.

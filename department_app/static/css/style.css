@@ -1,18 +1,24 @@
-.searc-box{
-  margin-top: 4vh;
-  margin-bottom: 4vh;
-}
-
-.search-fields{
-  max-width: 45%;
+h1{
+	text-decoration-line: underline;
+	text-decoration-color: rgba(23, 135, 255, 0.25);
 }
 
 input[type=button]{
   margin-top: 3vh;
   margin-bottom: 3vh;
 }
+
 table{
   margin-top: 3vh;
+}
+
+.search-box{
+  margin-top: 7vh;
+  margin-bottom: 2vh;
+}
+
+.search-inputs{
+	align-items: center;
 }
 
 .employees-table{
