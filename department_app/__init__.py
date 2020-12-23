@@ -2,6 +2,7 @@ import os
 import logging
 
 from flask import Flask
+import flask_migrate
 from flask_migrate import Migrate
 from flask_restful import Api
 
@@ -44,6 +45,9 @@ def create_app(test_object=None):
     db.init_app(app)
     ma.init_app(app)
     migrate.init_app(app, db)
+
+    with app.app_context():
+        flask_migrate.upgrade()
 
     register_api()
 
