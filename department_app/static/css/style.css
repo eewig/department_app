@@ -24,3 +24,11 @@ table{
 .employees-table{
   margin-top: 9vh;
 }
+
+.employee_info{
+	font-size: 18px;
+}
+
+.employee_info li{
+	padding: 2px 0;
+}
