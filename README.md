@@ -15,3 +15,6 @@ Additionally, is required .env file with next environment variables:
 - POSTGRES_HOST;
 - POSTGRES_PORT;
 - POSTGRES_DB.
+
+
+The **working** app you can find [here](https://department-app123.herokuapp.com/).
