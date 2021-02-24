@@ -1,4 +1,4 @@
-__pychache__/
+**/__pychache__
 *.py[cod]
 
 venv/
@@ -8,3 +8,7 @@ venv/
 .env
 
 *.log
+
+build/
+dist/
+department_app.egg-info/
